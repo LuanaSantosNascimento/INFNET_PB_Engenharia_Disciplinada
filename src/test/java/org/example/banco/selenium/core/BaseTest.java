@@ -7,6 +7,9 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
 
+import java.util.HashMap;
+import java.util.Map;
+
 public abstract class BaseTest {
 
     protected static WebDriver driver;
@@ -19,6 +22,10 @@ public abstract class BaseTest {
         options.addArguments("--no-sandbox");
         options.addArguments("--disable-dev-shm-usage");
         options.addArguments("window-size=1920,1080");
+
+        Map<String, Object> prefs = new HashMap<>();
+        prefs.put("intl.accept_languages", "pt-BR,pt");
+        options.setExperimentalOption("prefs", prefs);
 
         WebDriverManager.chromedriver().setup();
         driver = new ChromeDriver(options);

@@ -14,6 +14,7 @@ public abstract class BaseTest {
     @BeforeEach
     public void start() {
         ChromeOptions options = new ChromeOptions();
+        options.addArguments("--lang=pt-BR");
         options.addArguments("--headless");
         options.addArguments("--no-sandbox");
         options.addArguments("--disable-dev-shm-usage");

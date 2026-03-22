@@ -15,7 +15,7 @@ import org.springframework.boot.test.web.server.LocalServerPort;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.DEFINED_PORT)
-public class ContaBancariaSeleniumTest extends BaseTest {
+class ContaBancariaSeleniumTest extends BaseTest {
 
     private ContaBancariaPage paginaPrincipal;
 
@@ -23,7 +23,7 @@ public class ContaBancariaSeleniumTest extends BaseTest {
     private int port;
 
     @BeforeEach
-    public void setUp() {
+    void setUp() {
         paginaPrincipal = new ContaBancariaPage(driver);
         driver.get("http://localhost:" + port + "/index.html");
     }
@@ -35,7 +35,7 @@ public class ContaBancariaSeleniumTest extends BaseTest {
             "Carlos Santos, 2000"
     })
     @DisplayName("Deve criar conta com sucesso.")
-    public void deveCriarContaComSucesso(String nomeTitular, String saldoInicial) {
+    void deveCriarContaComSucesso(String nomeTitular, String saldoInicial) {
         paginaPrincipal.criarConta(nomeTitular, saldoInicial);
 
         assertTrue(paginaPrincipal.isContaNaTabela(nomeTitular));
@@ -43,16 +43,18 @@ public class ContaBancariaSeleniumTest extends BaseTest {
 
     @Test
     @DisplayName("Deve exibir mensagem de erro ao tentar criar conta sem informar nome.")
-    public void naoDeveCriarContaComNomeNulo() {
+    void naoDeveCriarContaComNomeNulo() {
         paginaPrincipal.criarConta("", "1000");
-        Assertions.assertEquals("Preencha este campo.", paginaPrincipal.getMensagemDeValidacaoDoInputNome());
+        String mensagemValidacao = paginaPrincipal.getMensagemDeValidacaoDoInputNome();
+        Assertions.assertEquals("Preencha este campo.", mensagemValidacao);
     }
 
     @Test
     @DisplayName("Deve exibir mensagem de erro ao tentar criar conta com saldo negativo.")
-    public void naoDeveCriarContaComSaldoNegativo() {
+    void naoDeveCriarContaComSaldoNegativo() {
         paginaPrincipal.criarConta("Maria ALice", "-100");
-        assertTrue(paginaPrincipal.getMensagemDeValidacaoDoInputSaldo().contains("O valor deve ser maior ou igual a 0."));
+        String mensagemValidacao = paginaPrincipal.getMensagemDeValidacaoDoInputSaldo();
+        Assertions.assertEquals("O valor deve ser maior ou igual a 0.", mensagemValidacao);
     }
 
     @ParameterizedTest(name = "Titular={0}, SaldoInicial={1}, SaldoFinal={2}")
@@ -62,7 +64,7 @@ public class ContaBancariaSeleniumTest extends BaseTest {
             "Juarez Santos, 2000, 0, Juarez Santos OLiveira"
     })
     @DisplayName("Deve editar conta com sucesso.")
-    public void deveEditarContaComSucesso(String titular, String saldoInicial, String saldoFinal, String nomeTitularAlterado) {
+    void deveEditarContaComSucesso(String titular, String saldoInicial, String saldoFinal, String nomeTitularAlterado) {
         paginaPrincipal.criarConta(titular, saldoInicial);
         paginaPrincipal.clicarBotaoEditarConta(titular);
         paginaPrincipal.editarConta(titular, nomeTitularAlterado, saldoFinal);
@@ -76,7 +78,7 @@ public class ContaBancariaSeleniumTest extends BaseTest {
             "Ana Costa"
     })
     @DisplayName("Deve excluir conta com sucesso.")
-    public void deveExcluirContaComSucesso(String titular) {
+    void deveExcluirContaComSucesso(String titular) {
         paginaPrincipal.clicarBotaoExcluirConta(titular);
         paginaPrincipal.excluirConta(titular);
         assertTrue

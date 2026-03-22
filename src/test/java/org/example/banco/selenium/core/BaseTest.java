@@ -18,6 +18,8 @@ public abstract class BaseTest {
     public void start() {
         ChromeOptions options = new ChromeOptions();
         options.addArguments("--lang=pt-BR");
+        options.addArguments("--remote-allow-origins=*");
+        options.addArguments("--disable-blink-features=TranslateUI");
         options.addArguments("--headless");
         options.addArguments("--no-sandbox");
         options.addArguments("--disable-dev-shm-usage");
